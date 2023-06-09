@@ -1,0 +1,7 @@
+To restore the DB do following seteps in command line
+
+psql -U postgres -d cuma -f cuma.sql
+
+To backup
+
+pg_dump -U postgres -d cuma -f cuma.sql
