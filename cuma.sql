@@ -78,43 +78,43 @@ ALTER TABLE public.faculty ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- Name: learning_outcoms; Type: TABLE; Schema: public; Owner: postgres
+-- Name: learning_outcome_level_suffix; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.learning_outcoms (
+CREATE TABLE public.learning_outcome_level_suffix (
     id bigint NOT NULL,
     legend text,
     description text
 );
 
 
-ALTER TABLE public.learning_outcoms OWNER TO postgres;
+ALTER TABLE public.learning_outcome_level_suffix OWNER TO postgres;
 
 --
--- Name: learning_outcoms_levels; Type: TABLE; Schema: public; Owner: postgres
+-- Name: learning_outcome_levels; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.learning_outcoms_levels (
+CREATE TABLE public.learning_outcome_levels (
     id bigint NOT NULL,
     legend text,
     level text
 );
 
 
-ALTER TABLE public.learning_outcoms_levels OWNER TO postgres;
+ALTER TABLE public.learning_outcome_levels OWNER TO postgres;
 
 --
--- Name: learning_outcoms_levels_suffix; Type: TABLE; Schema: public; Owner: postgres
+-- Name: learning_outcomes; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.learning_outcoms_levels_suffix (
+CREATE TABLE public.learning_outcomes (
     id bigint NOT NULL,
     legend text,
     description text
 );
 
 
-ALTER TABLE public.learning_outcoms_levels_suffix OWNER TO postgres;
+ALTER TABLE public.learning_outcomes OWNER TO postgres;
 
 --
 -- Name: login_uwin; Type: TABLE; Schema: public; Owner: postgres
@@ -292,10 +292,31 @@ COPY public.faculty (id, name) FROM stdin;
 
 
 --
--- Data for Name: learning_outcoms; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: learning_outcome_level_suffix; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.learning_outcoms (id, legend, description) FROM stdin;
+COPY public.learning_outcome_level_suffix (id, legend, description) FROM stdin;
+1	A	assessments indicated
+2	H	high-impact assessments indicated
+\.
+
+
+--
+-- Data for Name: learning_outcome_levels; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.learning_outcome_levels (id, legend, level) FROM stdin;
+1	I	Introduction
+2	R	Reinforcement
+3	M	Mastery
+\.
+
+
+--
+-- Data for Name: learning_outcomes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.learning_outcomes (id, legend, description) FROM stdin;
 1	A	the acquisition, application and integration of knowledge
 2	B	research skills, including the ability to define problems and access, retrieve and evaluate information (information literacy)
 3	C	critical thinking and problem-solving skills
@@ -305,27 +326,6 @@ COPY public.learning_outcoms (id, legend, description) FROM stdin;
 7	G	teamwork, and personal and group leadership skills
 8	H	creativity and aesthetic appreciation
 9	I	the ability and desire for continuous learning
-\.
-
-
---
--- Data for Name: learning_outcoms_levels; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.learning_outcoms_levels (id, legend, level) FROM stdin;
-1	I	Introduction
-2	R	Reinforcement
-3	M	Mastery
-\.
-
-
---
--- Data for Name: learning_outcoms_levels_suffix; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.learning_outcoms_levels_suffix (id, legend, description) FROM stdin;
-1	A	assessments indicated
-2	H	high-impact assessments indicated
 \.
 
 
@@ -495,26 +495,26 @@ ALTER TABLE ONLY public.faculty
 
 
 --
--- Name: learning_outcoms_levels learning_outcoms_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: learning_outcome_levels learning_outcoms_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.learning_outcoms_levels
+ALTER TABLE ONLY public.learning_outcome_levels
     ADD CONSTRAINT learning_outcoms_levels_pkey PRIMARY KEY (id);
 
 
 --
--- Name: learning_outcoms_levels_suffix learning_outcoms_levels_suffix_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: learning_outcome_level_suffix learning_outcoms_levels_suffix_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.learning_outcoms_levels_suffix
+ALTER TABLE ONLY public.learning_outcome_level_suffix
     ADD CONSTRAINT learning_outcoms_levels_suffix_pkey PRIMARY KEY (id);
 
 
 --
--- Name: learning_outcoms learning_outcoms_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: learning_outcomes learning_outcoms_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.learning_outcoms
+ALTER TABLE ONLY public.learning_outcomes
     ADD CONSTRAINT learning_outcoms_pkey PRIMARY KEY (id);
 
 
