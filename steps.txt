@@ -20,6 +20,8 @@ pg_dump -U postgres -d cuma -t login_uwin -f login_uwin.sql
 pg_dump -U postgres -d cuma -t program -f program.sql
 pg_dump -U postgres -d cuma -t project_permissions -f project_permissions.sql
 pg_dump -U postgres -d cuma -t uga_alignments -f uga_alignments.sql
+pg_dump -U postgres -d cuma -t program_course_outcome_xref -f program_course_outcome_xref.sql
+pg_dump -U postgres -d cuma -t project_program_course_outcome_xref -f project_program_course_outcome_xref.sql
 
 ########################################################
 # Restore each table from separate files
@@ -36,7 +38,7 @@ psql -U postgres -d cuma -f uga_alignments.sql
 
 
 ##########################################################################################
-############work in progress##############################################################
+############ work in progress ############################################################
 ##########################################################################################
 #!/bin/bash
 
@@ -64,3 +66,41 @@ restore_table "program" "program.sql"
 restore_table "project_permissions" "project_permissions.sql"
 restore_table "uga_alignments" "uga_alignments.sql"
 
+
+#############################################################
+project:
+these are created to add/update/delete any program/course
+
+program:
+what you doing like mac, msc
+
+course:
+are your subjects 
+
+learning outcomes:
+https://www.uwindsor.ca/qualityassurance/796/what-are-learning-outcomes
+
+these are the set of standards or points a student gain by completing the course or a program  
+learning_outcome (table name)
+
+so this learning outcomes are assigned to each and every course and program 
+(not clear alignments assigned to program are inherite to courses or vise versa or they has individual
+ defenitions) moving on...
+PLO (program learning outcomes)
+these are at the program level
+every program has to satisfy a certain amount of PLO approved by Senate
+To achieve this every PLO will be assigned one or more learning outcomes
+for ex PLO 1 will be assigned to A learning outcome
+
+so courses and program have learning outcomes to satisfy the PLO
+(I heard there is a formula to calculate this I have no idea) moving on...
+
+each learning_outcome has different levels
+    introduction I
+    reinforcement R
+    Mastery M
+
+each learning_outcome_level has flags
+    Assessments indicated I
+    High-impact assessements indicated H
+    
