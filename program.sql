@@ -30,7 +30,8 @@ CREATE TABLE public.program (
     academic_level text,
     faculty_id bigint,
     document_id text,
-    revision_start_date date
+    latest_modified date,
+    state text
 );
 
 
@@ -54,16 +55,16 @@ ALTER TABLE public.program ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 -- Data for Name: program; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.program (id, name, academic_level, faculty_id, document_id, revision_start_date) FROM stdin;
-1	Master of Applied Computing	Graduate	8	sljfnfk	2000-11-05
-2	MFA in Visual Arts	graduate	1	\N	2022-01-17
-3	Master of Management (MOM)	graduate	2	\N	2020-05-22
-4	Master of Education	graduate	3	\N	2018-04-13
-5	Master of Education with Second Language Acquisition, Culture and Society Concentration	graduate	3	\N	2013-04-12
-6	Master of Applied Science in Civil Engineering	graduate	4	\N	2016-06-10
-7	Master of Laws (LLM)	graduate	6	\N	2014-02-14
-8	Master of Materials Chemistry and Engineering (MMCE)	graduate	8	\N	2020-03-13
-9	Computer Science	Bachelor's	2	DOC001	2023-06-01
+COPY public.program (id, name, academic_level, faculty_id, document_id, latest_modified, state) FROM stdin;
+1	Master of Applied Computing	Graduate	8	sljfnfk	2000-11-05	published
+2	MFA in Visual Arts	graduate	1	\N	2022-01-17	published
+3	Master of Management (MOM)	graduate	2	\N	2020-05-22	published
+4	Master of Education	graduate	3	\N	2018-04-13	published
+5	Master of Education with Second Language Acquisition, Culture and Society Concentration	graduate	3	\N	2013-04-12	published
+6	Master of Applied Science in Civil Engineering	graduate	4	\N	2016-06-10	published
+7	Master of Laws (LLM)	graduate	6	\N	2014-02-14	published
+8	Master of Materials Chemistry and Engineering (MMCE)	graduate	8	\N	2020-03-13	published
+9	Computer Science	Bachelor's	2	DOC001	2023-06-01	published
 \.
 
 

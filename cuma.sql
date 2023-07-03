@@ -171,11 +171,54 @@ CREATE TABLE public.program (
     academic_level text,
     faculty_id bigint,
     document_id text,
-    revision_start_date date
+    latest_modified date,
+    state text
 );
 
 
 ALTER TABLE public.program OWNER TO postgres;
+
+--
+-- Name: program_alignments_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.program_alignments_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.program_alignments_seq OWNER TO postgres;
+
+--
+-- Name: program_alignments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.program_alignments (
+    id bigint DEFAULT nextval('public.program_alignments_seq'::regclass) NOT NULL,
+    program_id bigint NOT NULL,
+    legend text NOT NULL,
+    description text NOT NULL
+);
+
+
+ALTER TABLE public.program_alignments OWNER TO postgres;
+
+--
+-- Name: program_course_dim_xref_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.program_course_dim_xref_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.program_course_dim_xref_seq OWNER TO postgres;
 
 --
 -- Name: program_course_xref_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -209,6 +252,19 @@ CREATE TABLE public.program_course_outcome_xref (
 
 
 ALTER TABLE public.program_course_outcome_xref OWNER TO postgres;
+
+--
+-- Name: program_course_xref; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.program_course_xref (
+    id bigint DEFAULT nextval('public.program_course_dim_xref_seq'::regclass) NOT NULL,
+    program_id bigint NOT NULL,
+    couurse_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.program_course_xref OWNER TO postgres;
 
 --
 -- Name: program_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -373,6 +429,68 @@ CREATE TABLE public.project_permissions (
 ALTER TABLE public.project_permissions OWNER TO postgres;
 
 --
+-- Name: project_program_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.project_program_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.project_program_seq OWNER TO postgres;
+
+--
+-- Name: project_program; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.project_program (
+    id bigint DEFAULT nextval('public.project_program_seq'::regclass) NOT NULL,
+    project_id bigint NOT NULL,
+    name text NOT NULL,
+    academic_level text,
+    faculty_id bigint NOT NULL,
+    document_id text,
+    latest_modified date,
+    revision_start_date date,
+    state text,
+    parent_program_id bigint
+);
+
+
+ALTER TABLE public.project_program OWNER TO postgres;
+
+--
+-- Name: project_program_alignments_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.project_program_alignments_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.project_program_alignments_seq OWNER TO postgres;
+
+--
+-- Name: project_program_alignments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.project_program_alignments (
+    id bigint DEFAULT nextval('public.project_program_alignments_seq'::regclass) NOT NULL,
+    program_id bigint NOT NULL,
+    legend text,
+    description text
+);
+
+
+ALTER TABLE public.project_program_alignments OWNER TO postgres;
+
+--
 -- Name: project_program_course_outcome_xref; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -391,6 +509,20 @@ CREATE TABLE public.project_program_course_outcome_xref (
 
 
 ALTER TABLE public.project_program_course_outcome_xref OWNER TO postgres;
+
+--
+-- Name: project_program_course_xref; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.project_program_course_xref (
+    id bigint NOT NULL,
+    project_id bigint NOT NULL,
+    program_id bigint NOT NULL,
+    course_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.project_program_course_xref OWNER TO postgres;
 
 --
 -- Name: projectuga_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -498,16 +630,24 @@ COPY public.login_uwin (id, uwinid, password, firstname, lastname) FROM stdin;
 -- Data for Name: program; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.program (id, name, academic_level, faculty_id, document_id, revision_start_date) FROM stdin;
-1	Master of Applied Computing	Graduate	8	sljfnfk	2000-11-05
-2	MFA in Visual Arts	graduate	1	\N	2022-01-17
-3	Master of Management (MOM)	graduate	2	\N	2020-05-22
-4	Master of Education	graduate	3	\N	2018-04-13
-5	Master of Education with Second Language Acquisition, Culture and Society Concentration	graduate	3	\N	2013-04-12
-6	Master of Applied Science in Civil Engineering	graduate	4	\N	2016-06-10
-7	Master of Laws (LLM)	graduate	6	\N	2014-02-14
-8	Master of Materials Chemistry and Engineering (MMCE)	graduate	8	\N	2020-03-13
-9	Computer Science	Bachelor's	2	DOC001	2023-06-01
+COPY public.program (id, name, academic_level, faculty_id, document_id, latest_modified, state) FROM stdin;
+1	Master of Applied Computing	Graduate	8	sljfnfk	2000-11-05	published
+2	MFA in Visual Arts	graduate	1	\N	2022-01-17	published
+3	Master of Management (MOM)	graduate	2	\N	2020-05-22	published
+4	Master of Education	graduate	3	\N	2018-04-13	published
+5	Master of Education with Second Language Acquisition, Culture and Society Concentration	graduate	3	\N	2013-04-12	published
+6	Master of Applied Science in Civil Engineering	graduate	4	\N	2016-06-10	published
+7	Master of Laws (LLM)	graduate	6	\N	2014-02-14	published
+8	Master of Materials Chemistry and Engineering (MMCE)	graduate	8	\N	2020-03-13	published
+9	Computer Science	Bachelor's	2	DOC001	2023-06-01	published
+\.
+
+
+--
+-- Data for Name: program_alignments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.program_alignments (id, program_id, legend, description) FROM stdin;
 \.
 
 
@@ -516,6 +656,14 @@ COPY public.program (id, name, academic_level, faculty_id, document_id, revision
 --
 
 COPY public.program_course_outcome_xref (id, program_id, course_id, learning_outcome_description, uga_id, uga_level_id, uga_level_suffix_id, plo_id, multy_learning_outcome) FROM stdin;
+\.
+
+
+--
+-- Data for Name: program_course_xref; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.program_course_xref (id, program_id, couurse_id) FROM stdin;
 \.
 
 
@@ -631,11 +779,35 @@ COPY public.project_permissions (id, project_id, user_id, read, read_write) FROM
 
 
 --
+-- Data for Name: project_program; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.project_program (id, project_id, name, academic_level, faculty_id, document_id, latest_modified, revision_start_date, state, parent_program_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: project_program_alignments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.project_program_alignments (id, program_id, legend, description) FROM stdin;
+\.
+
+
+--
 -- Data for Name: project_program_course_outcome_xref; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.project_program_course_outcome_xref (id, project_id, program_id, course_id, learning_outcome_description, uga_id, uga_level_id, uga_level_suffix_id, plo_id, multy_learning_outcome) FROM stdin;
 1	4	2	2	test des	1	1	1	1	1
+\.
+
+
+--
+-- Data for Name: project_program_course_xref; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.project_program_course_xref (id, project_id, program_id, course_id) FROM stdin;
 \.
 
 
@@ -685,6 +857,20 @@ SELECT pg_catalog.setval('public.login_uwin_id_seq', 2, true);
 
 
 --
+-- Name: program_alignments_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.program_alignments_seq', 1, false);
+
+
+--
+-- Name: program_course_dim_xref_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.program_course_dim_xref_seq', 1, false);
+
+
+--
 -- Name: program_course_xref_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -731,6 +917,20 @@ SELECT pg_catalog.setval('public.project_id_seq', 19, true);
 --
 
 SELECT pg_catalog.setval('public.project_permissions_id_seq', 63, true);
+
+
+--
+-- Name: project_program_alignments_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.project_program_alignments_seq', 1, false);
+
+
+--
+-- Name: project_program_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.project_program_seq', 1, false);
 
 
 --
@@ -805,11 +1005,27 @@ ALTER TABLE ONLY public.login_uwin
 
 
 --
+-- Name: program_alignments program_alignments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.program_alignments
+    ADD CONSTRAINT program_alignments_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: program_course_outcome_xref program_course_outcome_xref_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.program_course_outcome_xref
     ADD CONSTRAINT program_course_outcome_xref_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: program_course_xref program_course_xref_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.program_course_xref
+    ADD CONSTRAINT program_course_xref_pkey PRIMARY KEY (id);
 
 
 --
@@ -861,11 +1077,27 @@ ALTER TABLE ONLY public.project
 
 
 --
+-- Name: project_program_alignments project_program_alignments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.project_program_alignments
+    ADD CONSTRAINT project_program_alignments_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: project_program_course_outcome_xref project_program_course_outcome_xref_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.project_program_course_outcome_xref
     ADD CONSTRAINT project_program_course_outcome_xref_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: project_program project_program_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.project_program
+    ADD CONSTRAINT project_program_pkey PRIMARY KEY (id);
 
 
 --
@@ -900,6 +1132,22 @@ ALTER TABLE ONLY public.course_alignments
 
 
 --
+-- Name: program_course_xref course_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.program_course_xref
+    ADD CONSTRAINT course_id FOREIGN KEY (couurse_id) REFERENCES public.course(id);
+
+
+--
+-- Name: project_program_course_xref course_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.project_program_course_xref
+    ADD CONSTRAINT course_id FOREIGN KEY (course_id) REFERENCES public.project_course(id) NOT VALID;
+
+
+--
 -- Name: program faculty_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -908,11 +1156,27 @@ ALTER TABLE ONLY public.program
 
 
 --
+-- Name: project_program faculty_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.project_program
+    ADD CONSTRAINT faculty_id FOREIGN KEY (faculty_id) REFERENCES public.faculty(id);
+
+
+--
 -- Name: project_course parent_course_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.project_course
     ADD CONSTRAINT parent_course_id FOREIGN KEY (parent_course_id) REFERENCES public.course(id) NOT VALID;
+
+
+--
+-- Name: project_program parent_program_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.project_program
+    ADD CONSTRAINT parent_program_id FOREIGN KEY (parent_program_id) REFERENCES public.program(id);
 
 
 --
@@ -948,6 +1212,38 @@ ALTER TABLE ONLY public.program_course_outcome_xref
 
 
 --
+-- Name: program_alignments program_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.program_alignments
+    ADD CONSTRAINT program_id FOREIGN KEY (program_id) REFERENCES public.program(id);
+
+
+--
+-- Name: program_course_xref program_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.program_course_xref
+    ADD CONSTRAINT program_id FOREIGN KEY (program_id) REFERENCES public.program(id);
+
+
+--
+-- Name: project_program_alignments program_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.project_program_alignments
+    ADD CONSTRAINT program_id FOREIGN KEY (program_id) REFERENCES public.project_program(id);
+
+
+--
+-- Name: project_program_course_xref program_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.project_program_course_xref
+    ADD CONSTRAINT program_id FOREIGN KEY (program_id) REFERENCES public.project_program(id);
+
+
+--
 -- Name: project_course_alignments project_course_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -968,6 +1264,22 @@ ALTER TABLE ONLY public.project_program_course_outcome_xref
 --
 
 ALTER TABLE ONLY public.project_course
+    ADD CONSTRAINT project_id FOREIGN KEY (project_id) REFERENCES public.project(id);
+
+
+--
+-- Name: project_program project_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.project_program
+    ADD CONSTRAINT project_id FOREIGN KEY (project_id) REFERENCES public.project(id);
+
+
+--
+-- Name: project_program_course_xref project_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.project_program_course_xref
     ADD CONSTRAINT project_id FOREIGN KEY (project_id) REFERENCES public.project(id);
 
 
