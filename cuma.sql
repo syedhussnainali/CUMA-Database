@@ -294,7 +294,8 @@ CREATE TABLE public.project_course (
     document_id text,
     revision_start_date date NOT NULL,
     latest_modified date,
-    state text
+    state text,
+    parent_course_id bigint
 );
 
 
@@ -567,9 +568,14 @@ COPY public.project (id, name, owner, default_read, default_read_write) FROM std
 -- Data for Name: project_course; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.project_course (id, project_id, course_code, also_known_as, formerly_known_as, name, document_id, revision_start_date, latest_modified, state) FROM stdin;
-1	19	test-100			test course	\N	2021-06-11	\N	Draft
-2	19	CSE101	CS101	\N	Introduction to Computer Science	DOC001	2022-01-01	2022-05-01	Active
+COPY public.project_course (id, project_id, course_code, also_known_as, formerly_known_as, name, document_id, revision_start_date, latest_modified, state, parent_course_id) FROM stdin;
+3	19	CSE101	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01	2023-06-01	draft	\N
+9	19	CSE101	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01	2023-06-01	draft	\N
+10	19	CSE101	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01	2023-06-01	draft	\N
+11	19	CSE101	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01	2023-06-01	draft	\N
+1	19	test-100			test course	\N	2021-06-11	\N	draft	\N
+2	19	CSE101	CS101	\N	Introduction to Computer Science	DOC001	2022-01-01	2023-07-03	draft	\N
+15	19	COMP-1000	\N	\N	Key Concepts in Computer Science	\N	2023-07-03	2023-07-03	draft	2
 \.
 
 
@@ -580,6 +586,15 @@ COPY public.project_course (id, project_id, course_code, also_known_as, formerly
 COPY public.project_course_alignments (id, course_id, legend, description) FROM stdin;
 1	1	C	Interpret mathematically about basic (discrete) structures used in Computer Science.
 2	1	CA	Calculate the computational time complexity of algorithms (also relevant to Section A).\n
+12	9	C	Interpret mathematically about basic (discrete) structures used in Computer Science.
+13	9	CA	Calculate the computational time complexity of algorithms (also relevant to Section A).\n
+14	10	C	Interpret mathematically about basic (discrete) structures used in Computer Science.
+15	10	CA	Calculate the computational time complexity of algorithms (also relevant to Section A).\n
+16	11	C	Interpret mathematically about basic (discrete) structures used in Computer Science.
+17	11	CA	Calculate the computational time complexity of algorithms (also relevant to Section A).\n
+30	15	C	Interpret mathematically about basic (discrete) structures used in Computer Science.
+31	15	CA	Explain the concepts of formal proof, soundness and completeness.
+32	15	F	Explain how a solution to a computational problem was derived.
 \.
 
 
@@ -694,14 +709,14 @@ SELECT pg_catalog.setval('public.program_xref_seq', 1, true);
 -- Name: project_course_alignments_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.project_course_alignments_seq', 3, true);
+SELECT pg_catalog.setval('public.project_course_alignments_seq', 32, true);
 
 
 --
 -- Name: project_course_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.project_course_seq', 2, true);
+SELECT pg_catalog.setval('public.project_course_seq', 15, true);
 
 
 --
@@ -890,6 +905,14 @@ ALTER TABLE ONLY public.course_alignments
 
 ALTER TABLE ONLY public.program
     ADD CONSTRAINT faculty_id FOREIGN KEY (faculty_id) REFERENCES public.faculty(id) NOT VALID;
+
+
+--
+-- Name: project_course parent_course_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.project_course
+    ADD CONSTRAINT parent_course_id FOREIGN KEY (parent_course_id) REFERENCES public.course(id) NOT VALID;
 
 
 --
