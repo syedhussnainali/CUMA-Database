@@ -260,7 +260,8 @@ ALTER TABLE public.program_course_outcome_xref OWNER TO postgres;
 CREATE TABLE public.program_course_xref (
     id bigint DEFAULT nextval('public.program_course_dim_xref_seq'::regclass) NOT NULL,
     program_id bigint NOT NULL,
-    couurse_id bigint NOT NULL
+    couurse_id bigint NOT NULL,
+    core boolean
 );
 
 
@@ -511,14 +512,29 @@ CREATE TABLE public.project_program_course_outcome_xref (
 ALTER TABLE public.project_program_course_outcome_xref OWNER TO postgres;
 
 --
+-- Name: project_program_course_xref_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.project_program_course_xref_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.project_program_course_xref_seq OWNER TO postgres;
+
+--
 -- Name: project_program_course_xref; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.project_program_course_xref (
-    id bigint NOT NULL,
+    id bigint DEFAULT nextval('public.project_program_course_xref_seq'::regclass) NOT NULL,
     project_id bigint NOT NULL,
     program_id bigint NOT NULL,
-    course_id bigint NOT NULL
+    course_id bigint NOT NULL,
+    core boolean
 );
 
 
@@ -648,6 +664,8 @@ COPY public.program (id, name, academic_level, faculty_id, document_id, latest_m
 --
 
 COPY public.program_alignments (id, program_id, legend, description) FROM stdin;
+1	2	D	test alignment
+2	2	DH	test alignment DH
 \.
 
 
@@ -663,7 +681,7 @@ COPY public.program_course_outcome_xref (id, program_id, course_id, learning_out
 -- Data for Name: program_course_xref; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.program_course_xref (id, program_id, couurse_id) FROM stdin;
+COPY public.program_course_xref (id, program_id, couurse_id, core) FROM stdin;
 \.
 
 
@@ -717,7 +735,6 @@ COPY public.project (id, name, owner, default_read, default_read_write) FROM std
 --
 
 COPY public.project_course (id, project_id, course_code, also_known_as, formerly_known_as, name, document_id, revision_start_date, latest_modified, state, parent_course_id) FROM stdin;
-3	19	CSE101	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01	2023-06-01	draft	\N
 9	19	CSE101	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01	2023-06-01	draft	\N
 10	19	CSE101	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01	2023-06-01	draft	\N
 11	19	CSE101	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01	2023-06-01	draft	\N
@@ -783,6 +800,10 @@ COPY public.project_permissions (id, project_id, user_id, read, read_write) FROM
 --
 
 COPY public.project_program (id, project_id, name, academic_level, faculty_id, document_id, latest_modified, revision_start_date, state, parent_program_id) FROM stdin;
+3	19	MFA in Visual Arts	graduate	1	\N	2022-01-17	2023-07-03	published	2
+4	19	MFA in Visual Arts	graduate	1	\N	2022-01-17	2023-07-03	published	2
+5	19	MFA in Visual Arts	graduate	1	\N	2022-01-17	2023-07-03	published	2
+6	19	MFA in Visual Arts	graduate	1	\N	2023-07-03	2023-07-03	draft	2
 \.
 
 
@@ -791,6 +812,8 @@ COPY public.project_program (id, project_id, name, academic_level, faculty_id, d
 --
 
 COPY public.project_program_alignments (id, program_id, legend, description) FROM stdin;
+7	6	D	test alignment
+8	6	DH	test alignment DH
 \.
 
 
@@ -807,7 +830,7 @@ COPY public.project_program_course_outcome_xref (id, project_id, program_id, cou
 -- Data for Name: project_program_course_xref; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.project_program_course_xref (id, project_id, program_id, course_id) FROM stdin;
+COPY public.project_program_course_xref (id, project_id, program_id, course_id, core) FROM stdin;
 \.
 
 
@@ -860,7 +883,7 @@ SELECT pg_catalog.setval('public.login_uwin_id_seq', 2, true);
 -- Name: program_alignments_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.program_alignments_seq', 1, false);
+SELECT pg_catalog.setval('public.program_alignments_seq', 2, true);
 
 
 --
@@ -923,14 +946,21 @@ SELECT pg_catalog.setval('public.project_permissions_id_seq', 63, true);
 -- Name: project_program_alignments_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.project_program_alignments_seq', 1, false);
+SELECT pg_catalog.setval('public.project_program_alignments_seq', 8, true);
+
+
+--
+-- Name: project_program_course_xref_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.project_program_course_xref_seq', 15, true);
 
 
 --
 -- Name: project_program_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.project_program_seq', 1, false);
+SELECT pg_catalog.setval('public.project_program_seq', 6, true);
 
 
 --
