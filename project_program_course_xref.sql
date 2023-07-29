@@ -25,10 +25,11 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.project_program_course_xref (
-    id bigint NOT NULL,
+    id bigint DEFAULT nextval('public.project_program_course_xref_seq'::regclass) NOT NULL,
     project_id bigint NOT NULL,
     program_id bigint NOT NULL,
-    course_id bigint NOT NULL
+    course_id bigint NOT NULL,
+    core boolean
 );
 
 
@@ -38,7 +39,10 @@ ALTER TABLE public.project_program_course_xref OWNER TO postgres;
 -- Data for Name: project_program_course_xref; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.project_program_course_xref (id, project_id, program_id, course_id) FROM stdin;
+COPY public.project_program_course_xref (id, project_id, program_id, course_id, core) FROM stdin;
+24	19	3	9	t
+25	19	3	10	f
+26	19	4	9	t
 \.
 
 

@@ -41,6 +41,15 @@ ALTER TABLE public.project_course_alignments OWNER TO postgres;
 COPY public.project_course_alignments (id, course_id, legend, description) FROM stdin;
 1	1	C	Interpret mathematically about basic (discrete) structures used in Computer Science.
 2	1	CA	Calculate the computational time complexity of algorithms (also relevant to Section A).\n
+12	9	C	Interpret mathematically about basic (discrete) structures used in Computer Science.
+13	9	CA	Calculate the computational time complexity of algorithms (also relevant to Section A).\n
+14	10	C	Interpret mathematically about basic (discrete) structures used in Computer Science.
+15	10	CA	Calculate the computational time complexity of algorithms (also relevant to Section A).\n
+16	11	C	Interpret mathematically about basic (discrete) structures used in Computer Science.
+17	11	CA	Calculate the computational time complexity of algorithms (also relevant to Section A).\n
+30	15	C	Interpret mathematically about basic (discrete) structures used in Computer Science.
+31	15	CA	Explain the concepts of formal proof, soundness and completeness.
+32	15	F	Explain how a solution to a computational problem was derived.
 \.
 
 

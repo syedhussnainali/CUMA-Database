@@ -56,11 +56,15 @@ ALTER TABLE public.project ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 COPY public.project (id, name, owner, default_read, default_read_write) FROM stdin;
 2	test	test@uwindsor.ca	t	f
 3	test	test@uwindsor.ca	t	f
-4	pname	test@uwindsor.ca	t	f
-12	pname	test@uwindsor.ca	t	f
 13	pname	test@uwindsor.ca	t	f
 14	testproject	test@uwindsor.ca	f	f
 15	lol	test@uwindsor.ca	f	f
+16	lol	test@uwindsor.ca	f	f
+4	pname	test@uwindsor.ca	f	f
+17	lol	test@uwindsor.ca	f	f
+18	lol	test@uwindsor.ca	f	f
+19	latest	test@uwindsor.ca	f	f
+12	pname	test@uwindsor.ca	f	t
 \.
 
 
@@ -68,7 +72,7 @@ COPY public.project (id, name, owner, default_read, default_read_write) FROM std
 -- Name: project_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.project_id_seq', 15, true);
+SELECT pg_catalog.setval('public.project_id_seq', 19, true);
 
 
 --

@@ -31,7 +31,8 @@ CREATE TABLE public.course (
     formerly_known_as text,
     name text NOT NULL,
     document_id text,
-    revision_start_date date NOT NULL
+    latest_modified date NOT NULL,
+    state text
 );
 
 
@@ -41,12 +42,12 @@ ALTER TABLE public.course OWNER TO postgres;
 -- Data for Name: course; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.course (id, course_code, also_known_as, formerly_known_as, name, document_id, revision_start_date) FROM stdin;
-2	COMP-1000	\N	\N	Key Concepts in Computer Science	\N	2021-06-11
-3	COMP-8570	\N	\N	Computational Geometry and Its Applications	\N	2021-04-12
-5	test	\N	\N	test	test	2021-04-12
-6	CSE101	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01
-1	COMP-08	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01
+COPY public.course (id, course_code, also_known_as, formerly_known_as, name, document_id, latest_modified, state) FROM stdin;
+2	COMP-1000	\N	\N	Key Concepts in Computer Science	\N	2021-06-11	published
+3	COMP-8570	\N	\N	Computational Geometry and Its Applications	\N	2021-04-12	published
+5	test	\N	\N	test	test	2021-04-12	published
+6	CSE101	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01	published
+1	COMP-08	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01	published
 \.
 
 

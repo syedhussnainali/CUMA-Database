@@ -56,6 +56,14 @@ COPY public.project_permissions (id, project_id, user_id, read, read_write) FROM
 14	13	test@uwindsor.ca	t	t
 19	14	test@uwindsor.ca	t	t
 22	15	test@uwindsor.ca	t	t
+23	16	test@uwindsor.ca	t	t
+24	16	test@uwindsor.ca	t	t
+52	18	test@uwindsor.ca	t	t
+53	18	test@uwindsor.ca	t	f
+60	19	user2@uwindsor.ca	t	t
+61	19	test@uwindsor.ca	t	t
+62	19	user1@uwindsor.ca	t	f
+63	19	test@uwindsor.ca	t	f
 \.
 
 

@@ -34,7 +34,8 @@ CREATE TABLE public.project_course (
     document_id text,
     revision_start_date date NOT NULL,
     latest_modified date,
-    state text
+    state text,
+    parent_course_id bigint
 );
 
 
@@ -44,8 +45,13 @@ ALTER TABLE public.project_course OWNER TO postgres;
 -- Data for Name: project_course; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.project_course (id, project_id, course_code, also_known_as, formerly_known_as, name, document_id, revision_start_date, latest_modified, state) FROM stdin;
-1	19	test-100			test course	\N	2021-06-11	\N	Draft
+COPY public.project_course (id, project_id, course_code, also_known_as, formerly_known_as, name, document_id, revision_start_date, latest_modified, state, parent_course_id) FROM stdin;
+9	19	CSE101	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01	2023-06-01	draft	\N
+10	19	CSE101	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01	2023-06-01	draft	\N
+11	19	CSE101	Intro to Computer Science	CS101	Computer Science Fundamentals	DOC001	2023-06-01	2023-06-01	draft	\N
+1	19	test-100			test course	\N	2021-06-11	\N	draft	\N
+2	19	CSE101	CS101	\N	Introduction to Computer Science	DOC001	2022-01-01	2023-07-03	draft	\N
+15	19	COMP-1000	\N	\N	Key Concepts in Computer Science	\N	2023-07-03	2023-07-03	draft	2
 \.
 
 
@@ -55,6 +61,14 @@ COPY public.project_course (id, project_id, course_code, also_known_as, formerly
 
 ALTER TABLE ONLY public.project_course
     ADD CONSTRAINT project_course_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: project_course parent_course_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.project_course
+    ADD CONSTRAINT parent_course_id FOREIGN KEY (parent_course_id) REFERENCES public.course(id) NOT VALID;
 
 
 --

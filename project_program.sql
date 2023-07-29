@@ -45,6 +45,10 @@ ALTER TABLE public.project_program OWNER TO postgres;
 --
 
 COPY public.project_program (id, project_id, name, academic_level, faculty_id, document_id, latest_modified, revision_start_date, state, parent_program_id) FROM stdin;
+3	19	MFA in Visual Arts	graduate	1	\N	2022-01-17	2023-07-03	published	2
+4	19	MFA in Visual Arts	graduate	1	\N	2022-01-17	2023-07-03	published	2
+5	19	MFA in Visual Arts	graduate	1	\N	2022-01-17	2023-07-03	published	2
+6	19	MFA in Visual Arts	graduate	1	\N	2023-07-14	2023-07-03	draft	\N
 \.
 
 

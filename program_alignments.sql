@@ -39,6 +39,8 @@ ALTER TABLE public.program_alignments OWNER TO postgres;
 --
 
 COPY public.program_alignments (id, program_id, legend, description) FROM stdin;
+1	2	D	test alignment
+2	2	DH	test alignment DH
 \.
 
 
